@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .buttons {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+    display: flex;
+    flex-direction: row-reverse;
+
+    .btn {
+      border: none;
+      color: var(--color-contrast);
+      background-color: var(--color);
+      font-family: var(--font);
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1em;
+    }
+  }
+}
