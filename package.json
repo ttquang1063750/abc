@@ -1,6 +1,6 @@
 {
-  "name": "abc",
-  "version": "0.0.0",
+  "name": "abc-for-kids",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

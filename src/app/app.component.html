@@ -2,5 +2,11 @@
   <canvas #canvas></canvas>
   <div class="buttons">
     <button class="btn" (click)="clear()">clear</button>
+    <label class="btn" *ngIf="voices.length">
+      Voice
+      <select [(ngModel)]="voice">
+        <option [ngValue]="v" *ngFor="let v of voices">{{v.name}}</option>
+      </select>
+    </label>
   </div>
 </div>

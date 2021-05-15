@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
   font: string;
   start = false;
   debounce = Utils.createDebounce(350);
+  voice: SpeechSynthesisVoice;
+  voices: SpeechSynthesisVoice[] = [];
 
   @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
@@ -50,9 +52,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     Utils.fetchFont(() => {
+      this.fetchVoices();
       this.changeColorAndFont();
       this.resize();
     });
+  }
+
+  fetchVoices(): void {
+    this.voices = speechSynthesis.getVoices();
+    if(this.voices.length === 0) {
+      setTimeout(() => this.fetchVoices(), 2000);
+    }else {
+      this.voice = this.voices[0];
+    }
   }
 
   changeColorAndFont(): void {
@@ -80,8 +92,14 @@ export class AppComponent implements OnInit {
     this.clear();
     this.changeColorAndFont();
     this.ctx.save();
-    const fontSize = Math.floor(this.ctx.canvas.height * 2 / 3);
+
+    let fontSize = Math.floor(this.ctx.canvas.height * 2 / 3);
     this.ctx.font = `${fontSize}px ${this.font}`;
+
+    while (this.ctx.measureText(this.alphabet).width > this.ctx.canvas.width - 20) {
+      fontSize -= 5;
+      this.ctx.font = `${fontSize}px ${this.font}`;
+    }
     this.ctx.textAlign = 'center';
     this.ctx.fillStyle = this.color;
     this.ctx.textBaseline = 'middle';
@@ -92,6 +110,10 @@ export class AppComponent implements OnInit {
 
   textToSpeech(): void {
     const msg = new SpeechSynthesisUtterance(this.alphabet);
+    if(this.voice) {
+      msg.voice = this.voice;
+    }
+    msg.volume = 1;
     speechSynthesis.cancel();
     speechSynthesis.speak(msg);
   }
